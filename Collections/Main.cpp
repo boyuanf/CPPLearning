@@ -14,6 +14,8 @@ using namespace  std;
 void LearnInheritance()
 {
 	
+	cout << "aaa" << endl;
+
 	Person p1("Kate", "Gregory", 123);
 	{
 		Tweeter  p2("Someone", "Else", 456,"@whoever");
