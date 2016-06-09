@@ -5,25 +5,31 @@
 
 using namespace std;
 
-Person::Person() : firstname(""),lastname(""),arbitrarynumber(0)
+Person::Person() : firstname(""), lastname(""), arbitrarynumber(0), pResource(nullptr)
+{
+}
+
+Person::Person(const Person& p) : firstname(p.firstname), lastname(p.lastname),
+arbitrarynumber(p.arbitrarynumber), pResource(new Resource(p.pResource->GetName()))
 {
 }
 
 Person::Person(string first,string last,
 	int arbitrary) : firstname(first),lastname(last),
-	arbitrarynumber(arbitrary)
+	arbitrarynumber(arbitrary), pResource(nullptr)
 { 
 	if (arbitrarynumber==0)
 	{
 		throw invalid_argument("arbitrary number for a person cannot be 0");
 	}
-	cout << "constructing Person" <<
+	cout << "constructing Person " <<
 		firstname << " " << lastname << endl;
 }
 
 Person::~Person()
 {
-	cout << "destructing  Person" <<
+	delete pResource;
+	cout << "destructing  Person " <<
 		firstname << " " << lastname << endl;
 }
 
@@ -37,7 +43,28 @@ bool Person::operator<(int i)
 	return arbitrarynumber < i;
 }
 
+void Person::AddResource()
+{
+	delete pResource;
+	pResource = new Resource("Resource for" + GetName());
+}
+
 bool operator<(int i, Person& p)
 {
 	return i < p.arbitrarynumber;
+}
+
+void Person::SetFirstName(string fName)
+{
+	firstname = fName;
+}
+
+Person& Person::operator=(const Person& p)
+{
+	firstname=p.firstname;
+	lastname = p.lastname;
+	arbitrarynumber = p.arbitrarynumber;
+	delete pResource;
+	pResource=new Resource(p.pResource->GetName());
+	return *this;
 }

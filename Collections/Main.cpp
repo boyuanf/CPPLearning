@@ -8,6 +8,7 @@
 #include "Tweeter.h"
 #include "Status.h"
 #include "Accum.h"
+#include "Resource.h"
 
 using namespace  std;
 
@@ -85,7 +86,7 @@ void classtemplate()
 	cout << total.GetTotal() << endl;
 }
 
-int _tmain(int argc, _TCHAR* argv[])
+void PointerReference()
 {
 	int i = 3;
 	const int ci = 3;
@@ -103,8 +104,6 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	cout << Kate.GetNum() << " " << rKate.GetNum() << endl;
 
-
-	
 	int *pI = &i;
 	const int * pII = &ci;
 
@@ -117,8 +116,22 @@ int _tmain(int argc, _TCHAR* argv[])
 	int * const cpI = pI; //const pointer
 	*cpI = 7;
 	//cpI = &j;
+}
 
+int _tmain(int argc, _TCHAR* argv[])
+{
+	{
+		Resource localResource("local");
+		string localstring = localResource.GetName();
+	}
+	Person p1("Kate", "Gregory", 123);
+	p1.AddResource();
+	p1.SetFirstName("Kate2");
+	p1.AddResource();
+	Person p2 = p1;
+	p1 = p2;
 
+	//PointerReference();
 	//classtemplate();
 	//learnfunctiontemplate();
 	//ImmediateIf();
