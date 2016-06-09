@@ -26,6 +26,8 @@ void LearnInheritance()
 
 	cout << "testBrach4" << endl;
 
+	cout << "testBrach5" << endl;
+
 	Person p1("Kate", "Gregory", 123);
 	{
 		Tweeter  p2("Someone", "Else", 456,"@whoever");
