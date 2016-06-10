@@ -5,18 +5,18 @@
 
 using namespace std;
 
-Person::Person() : firstname(""), lastname(""), arbitrarynumber(0), pResource(nullptr)
+Person::Person() : firstname(""), lastname(""), arbitrarynumber(0)/*, pResource(nullptr)*/
 {
 }
 
-Person::Person(const Person& p) : firstname(p.firstname), lastname(p.lastname),
-arbitrarynumber(p.arbitrarynumber), pResource(new Resource(p.pResource->GetName()))
-{
-}
-
+//Person::Person(const Person& p) : firstname(p.firstname), lastname(p.lastname),
+//arbitrarynumber(p.arbitrarynumber), pResource(new Resource(p.pResource->GetName()))
+//{
+//}
+//
 Person::Person(string first,string last,
 	int arbitrary) : firstname(first),lastname(last),
-	arbitrarynumber(arbitrary), pResource(nullptr)
+	arbitrarynumber(arbitrary)/*, pResource(nullptr)*/
 { 
 	if (arbitrarynumber==0)
 	{
@@ -28,7 +28,7 @@ Person::Person(string first,string last,
 
 Person::~Person()
 {
-	delete pResource;
+	//delete pResource;
 	cout << "destructing  Person " <<
 		firstname << " " << lastname << endl;
 }
@@ -45,8 +45,8 @@ bool Person::operator<(int i)
 
 void Person::AddResource()
 {
-	delete pResource;
-	pResource = new Resource("Resource for" + GetName());
+	pResource.reset();
+	pResource = std::make_shared<Resource>("Resource for " + GetName());
 }
 
 bool operator<(int i, Person& p)
@@ -59,12 +59,12 @@ void Person::SetFirstName(string fName)
 	firstname = fName;
 }
 
-Person& Person::operator=(const Person& p)
-{
-	firstname=p.firstname;
-	lastname = p.lastname;
-	arbitrarynumber = p.arbitrarynumber;
-	delete pResource;
-	pResource=new Resource(p.pResource->GetName());
-	return *this;
-}
+//Person& Person::operator=(const Person& p)
+//{
+//	firstname=p.firstname;
+//	lastname = p.lastname;
+//	arbitrarynumber = p.arbitrarynumber;
+//	delete pResource;
+//	pResource=new Resource(p.pResource->GetName());
+//	return *this;
+//}
