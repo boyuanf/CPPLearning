@@ -21,13 +21,14 @@ public:
 	/*Person(const Person &p);*/
 	~Person();
 	std::string GetName() {return firstname + " " + lastname;}
-	void SetNum(int arbitrary) { arbitrarynumber = arbitrary; };
+	void SetNum(int arbitrary) { arbitrarynumber = arbitrary; }
 	int GetNum() {return arbitrarynumber;}
 	bool operator<(Person& p);
  	bool operator<(int i);
 	friend bool operator<(int i, Person& p);
 	void AddResource();
 	void SetFirstName(std::string fName);
+	std::string GetResourceName() const{ return pResource->GetName();}
 	/*Person& operator=(const Person&p);*/
 };
 bool operator<(int i, Person& p);
