@@ -1,5 +1,6 @@
 #include <string>
 #include "Resource.h"
+#include <memory>
 #ifndef _Person_H
 #define _Person_H
 class Person
@@ -8,7 +9,8 @@ protected:
 	std::string firstname;
 	std::string lastname;
 	int arbitrarynumber;
-	Resource* pResource;
+	//Resource* pResource;
+	std::shared_ptr<Resource> pResource;
 
 public:
 
@@ -16,7 +18,7 @@ public:
 		std::string last,
 		int arbitrary);
 	Person();
-	Person(const Person &p);
+	/*Person(const Person &p);*/
 	~Person();
 	std::string GetName() {return firstname + " " + lastname;}
 	void SetNum(int arbitrary) { arbitrarynumber = arbitrary; };
@@ -26,7 +28,7 @@ public:
 	friend bool operator<(int i, Person& p);
 	void AddResource();
 	void SetFirstName(std::string fName);
-	Person& operator=(const Person&p);
+	/*Person& operator=(const Person&p);*/
 };
 bool operator<(int i, Person& p);
 
