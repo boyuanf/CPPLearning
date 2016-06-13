@@ -120,13 +120,22 @@ void PointerReference()
 
 void SmartPointer()
 {
-	shared_ptr<int> ptrInt(new int[5]);
-	shared_ptr<int> ptrInt2 =make_shared<int>(100);  //declare only 1 int
 
-	/*for (int i = 0; i < 5; i++)
-	{
-		cout << *(ptrInt+1) << endl;
-	}*/
+	shared_ptr<int> ptrInt2 = make_shared<int>(100);  //declare only 1 int
+	
+	unique_ptr<int []> ptrInt(new int[5]);  //use unique pointers point to array
+	ptrInt.get()[0] = 5;
+	*(ptrInt.get() + 1) = 6;
+	ptrInt[2] = 7;
+	for (auto pInt = ptrInt.get(); pInt < ptrInt.get() + 3; pInt++) cout << *pInt << endl;
+
+	//use shared pointers point to array
+	shared_ptr<string> sp(new string[4], [](string *p) { delete[] p; });
+	sp.get()[0] = "string 1";
+	sp.get()[1] = "string 2";
+	sp.get()[2] = "string 3";
+	*(sp.get() + 3) = "string 4";
+	for (auto q = sp.get(); q < sp.get() + 4; q++) cout << *q << endl;
 
 	{
 		Resource localResource("local");
@@ -146,7 +155,8 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	
 
-	SmartPointer();
+
+	//SmartPointer();
 	//PointerReference();
 	//classtemplate();
 	//learnfunctiontemplate();
