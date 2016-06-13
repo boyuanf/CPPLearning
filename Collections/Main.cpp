@@ -151,11 +151,45 @@ void SmartPointer()
 	string s1 = p1.GetResourceName();
 }
 
+void Polymorphism()
+{
+	Person *Kate=new Person("Kate", "Gregory", 123);
+	Tweeter *KateTw = new Tweeter("Kate", "Gregory", 456,"@KG");
+
+	Person *pKate = KateTw;
+
+	cout << Kate->GetName() << endl;
+	cout << KateTw->GetName() << endl;
+	cout << pKate->GetName() << endl;
+
+	delete pKate;
+
+	auto spKate = make_shared<Person>("Kate", "Gregory", 567);
+	cout << spKate->GetName() << endl;
+
+	shared_ptr<Person> spKateTw = make_shared<Tweeter>("Kate", "Gregory", 789,"@SPKate");
+	cout << spKateTw->GetName() << endl;
+
+	Person localP("Local", "Person", 333);
+	//Tweeter localT = localP;
+
+	//-----------------Slicing-----------------//
+	Tweeter localT2("Local", "Tweeter", 444, "@local");
+	Person localP2 = localT2;
+	cout << localP2.GetName() << endl;
+
+	//----------Use reference to avoid slicing-----------//
+	Tweeter localT3("Local", "Tweeter", 444, "@local");
+	Person& localP3 = localT3;
+	cout << localP3.GetName() << endl;
+
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	
-
-
+	
+	//Polymorphism();
 	//SmartPointer();
 	//PointerReference();
 	//classtemplate();

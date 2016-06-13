@@ -8,12 +8,12 @@ Tweeter::Tweeter(std::string first, std::string last,
 										twitterhandle(handle)
 {
 	std::cout << "constructing Tweeter " <<
-		twitterhandle << " " << lastname << std::endl;
+		twitterhandle << " " << Person::GetName() << std::endl;
 }
 
 
 Tweeter::~Tweeter()
 {
 	std::cout << "destructing  Tweeter " <<
-		twitterhandle << " " << lastname << std::endl;
+		twitterhandle << " " << Person::GetName() << std::endl;
 }
