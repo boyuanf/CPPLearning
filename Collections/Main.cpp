@@ -123,10 +123,10 @@ void SmartPointer()
 	shared_ptr<int> ptrInt(new int[5]);
 	shared_ptr<int> ptrInt2 =make_shared<int>(100);  //declare only 1 int
 
-	for (int i = 0; i < 5; i++)
+	/*for (int i = 0; i < 5; i++)
 	{
 		cout << *(ptrInt+1) << endl;
-	}
+	}*/
 
 	{
 		Resource localResource("local");
