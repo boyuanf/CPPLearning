@@ -8,7 +8,7 @@
 class Tweeter :
 	public Person
 {
-private:
+public:
 	std::string twitterhandle;
 public:
 	Tweeter(std::string first, std::string last,

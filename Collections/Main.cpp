@@ -185,10 +185,35 @@ void Polymorphism()
 
 }
 
+
 int _tmain(int argc, _TCHAR* argv[])
 {
+
+	Tweeter t("Kate", "Gregory", 123, "@gregcons");
+	Person* p = &t;
+	Tweeter* pt = static_cast<Tweeter*>(p);  //works fine
+	cout << pt->GetName() << endl;
+	Tweeter* pdt = dynamic_cast<Tweeter*>(p);  //works fine
+	cout << pdt->GetName() << endl;
+
+
+	Person *Kate = new Person("Kate", "Gregory", 123);
+	Tweeter* ptt = static_cast<Tweeter*>(Kate);  //works but unsafe
+	cout << ptt->GetName() << endl;
+	//cout << ptt->twitterhandle << endl;   //will cause crash
+
 	
-	
+	Resource f("local");
+	Tweeter* pi = dynamic_cast<Tweeter*>(&f);
+	if (pi)
+	{
+		cout << pi->GetName() << endl;
+	}
+	else
+	{
+		cout << "Resource can't be cast to Tweeter!" << endl;
+	}
+
 	//Polymorphism();
 	//SmartPointer();
 	//PointerReference();
