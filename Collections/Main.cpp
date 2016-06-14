@@ -12,7 +12,7 @@
 
 using namespace  std;
 
-void LearnInheritance()
+void LearnInheritanceandEnum()
 {
 	Person p1("Kate", "Gregory", 123);
 	{
@@ -220,7 +220,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	//classtemplate();
 	//learnfunctiontemplate();
 	//ImmediateIf();
-	//LearnInheritance();
+	//LearnInheritanceandEnum();
 	//learnCollections();
 	return 0;
 }
