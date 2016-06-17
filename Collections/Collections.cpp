@@ -9,6 +9,7 @@
 
 #include "Person.h"
 #include "functions.h"
+#include <list>
 
 using namespace  std;
 
@@ -32,6 +33,20 @@ bool odd(int i)
 
 int learnCollections()
 {
+	list<int> mylist;     //list in C++ is a double linked list
+	int sum(0);  // is explicit call the constructor
+	mylist.push_back(100);
+	mylist.push_back(200);
+	mylist.push_back(300);
+
+	while (!mylist.empty())
+	{
+		sum += mylist.front();
+		mylist.pop_front();
+	}
+
+	cout << "Sum= " << sum << endl;
+
 	vector<int> v;
 	v.push_back(3);
 	v.push_back(6);
@@ -146,7 +161,8 @@ int learnCollections()
 	for_each(v2.begin(), v2.end(), [](int n){cout << n << " "; });
 	cout << endl;
 
-	//explicityly specifying the return type
+	//explicityly specifying the return type by using -> Type as below:
+	//[]() -> Type { }
 	vector<double> dv;
 	transform(v.begin(), v.end(), back_inserter(dv), [](int n)->double {
 		          if (n % 2 == 0)

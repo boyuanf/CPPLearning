@@ -9,6 +9,7 @@
 #include "Status.h"
 #include "Accum.h"
 #include "Resource.h"
+#include "Collections.h"
 
 using namespace  std;
 
@@ -185,10 +186,8 @@ void Polymorphism()
 
 }
 
-
-int _tmain(int argc, _TCHAR* argv[])
+void Casting()
 {
-
 	Tweeter t("Kate", "Gregory", 123, "@gregcons");
 	Person* p = &t;
 	Tweeter* pt = static_cast<Tweeter*>(p);  //works fine
@@ -202,7 +201,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	cout << ptt->GetName() << endl;
 	//cout << ptt->twitterhandle << endl;   //will cause crash
 
-	
+
 	Resource f("local");
 	Tweeter* pi = dynamic_cast<Tweeter*>(&f);
 	if (pi)
@@ -213,7 +212,12 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		cout << "Resource can't be cast to Tweeter!" << endl;
 	}
+}
 
+int _tmain(int argc, _TCHAR* argv[])
+{
+
+	//Casting();
 	//Polymorphism();
 	//SmartPointer();
 	//PointerReference();
@@ -221,6 +225,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	//learnfunctiontemplate();
 	//ImmediateIf();
 	//LearnInheritanceandEnum();
-	//learnCollections();
+	learnCollections();
 	return 0;
 }
