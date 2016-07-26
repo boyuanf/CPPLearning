@@ -214,9 +214,65 @@ void Casting()
 	}
 }
 
+class Base
+{
+public:
+	virtual ~Base(){}
+};
+
+class Derived : public Base
+{
+};
+
+void f()
+{
+	try
+	{
+		throw Derived();
+	}
+	catch (Derived& ex)
+	{
+		cout << "Caught in f\n";
+		throw;
+	}
+
+}
+
+
+void TestTryCatch()
+{
+	try{
+
+		try {
+			throw Derived();
+		}
+		catch (const Derived &d) {
+			throw;
+		}
+		catch (const Base &b) {
+			cout << "caught Base 1!" << endl;
+		}
+
+	}
+	catch (const Base &b) {
+		cout << "caught Base 2!" << endl;
+	}
+	catch (const Derived &d) {
+		cout << "caught Derived 2!" << endl;
+	}
+	/*try
+	{
+	f();
+	}
+	catch (Base& b)
+	{
+	cout << "Caught in main\n";
+	}*/
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
-
+	//TestTryCatch();
 	//Casting();
 	//Polymorphism();
 	//SmartPointer();
@@ -225,6 +281,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	//learnfunctiontemplate();
 	//ImmediateIf();
 	//LearnInheritanceandEnum();
-	learnCollections();
+	//learnCollections();
 	return 0;
 }
