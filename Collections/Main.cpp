@@ -270,11 +270,25 @@ void TestTryCatch()
 	}*/
 }
 
+void DiffSmartAndRawPointer()
+{
+	/*going to cause an error because two shared_ptrs from
+	different groups share a single raw resource.
+	If we use make_shared then can avoid this.
+	*/
+	//shared_ptr<int> p = make_shared<int>(100);  //declare only 1 int
+	//shared_ptr<int> p(new int);  //declare only 1 int
+	int* p = new int;
+	shared_ptr<int> sptr1(p);
+	shared_ptr<int> sptr2(p);
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	//TestTryCatch();
 	//Casting();
 	//Polymorphism();
+	DiffSmartAndRawPointer();
 	//SmartPointer();
 	//PointerReference();
 	//classtemplate();
