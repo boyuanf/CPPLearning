@@ -3,6 +3,9 @@
 #include <iostream>
 #include <map>
 #include <algorithm>
+#include <fstream>
+#include <regex>
+#include <sstream>
 
 //#include "Person.h"
 #include "Tweeter.h"
@@ -283,12 +286,104 @@ void DiffSmartAndRawPointer()
 	shared_ptr<int> sptr2(p);
 }
 
+void StringLenthAndChar2wChar()
+{
+	std::unique_ptr<char[]> myBuffer(new char[1024]);
+	cout << strlen(&myBuffer[0]);
+	//memset(&myBuffer[0], 0, 1024);
+	std::string s = "Message from thread queue by POST!";  //Write constant string for
+	//memcpy(myBuffer, s.c_str(), s.length());
+	//strcpy(&myBuffer[0], s.c_str());
+	memcpy_s(&myBuffer[0], 1024, s.c_str(), s.length() + 1);
+	cout << strlen(&myBuffer[0]);
+	cout << &myBuffer[0] << endl;
+
+	char str[3];
+	str[0] = 'a';
+	str[1] = 'b';
+	str[2] = 'c';
+	int len = strlen(str);
+	size_t convertedLength = 0;
+	size_t newsize = 3;
+	wchar_t * wcstring = new wchar_t[newsize];
+	mbstowcs_s(&convertedLength, wcstring, newsize, str, _TRUNCATE);
+	wcout << wcstring << endl;
+	return;
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
+
+	//Read Config File
+	ifstream in("StlinkConfig.csv");
+	stringstream strStream;
+	strStream << in.rdbuf();
+	string configFileStr(strStream.str());
+	string tmpConfigStr;
+	char p[5000];
+	strcpy(p, configFileStr.c_str());
+	auto serverNum = 0;
+
+	std::smatch sernum_match;
+
+	// + means one or more, * means 0 or more
+	regex testSearch("PtAuth_Live,\\nServerNum,(\\d+),*\\n*", std::regex_constants::ECMAScript | std::regex_constants::icase);
+	//regex testSearch("PtAuth_Live,\nServerNum,(.*),\n", std::regex_constants::ECMAScript | std::regex_constants::icase);
+	//regex testSearch("PtAuth_Live,\nServerNum,([0-9]{1}),\n", std::regex_constants::ECMAScript | std::regex_constants::icase);
+	if (std::regex_search(configFileStr, sernum_match, testSearch)) {
+		cout <<"ServerNumber:"<< sernum_match[1] << endl;
+		/*for(size_t i = 0; i < sernum_match.size(); ++i)
+			std::cout << i << ": " << sernum_match[i] << '\n';
+		cout << sernum_match.str() << endl;
+		cout<<endl << sernum_match.suffix() << endl;*/
+		tmpConfigStr = sernum_match.suffix();
+		serverNum = std::stoi(sernum_match[1]);
+	}
+	
+	/*regex testSearch2("(.*ServerName,)(.*)(,\\n*)(.*UserName,)(.*)(,\\n*)(.*Password,)(.*)(,\\n*)");
+	if (std::regex_search(tmpConfigStr, sernum_match, testSearch2)) {
+		cout << "ServerName:" << sernum_match[2] << endl;
+		cout << "UserName:" << sernum_match[4] << endl;
+		cout << "Password:" << sernum_match[8] << endl;
+		std::cout << "Suffix: '" << sernum_match.suffix() << "\'\n\n";
+	}*/
+	
+	regex searchDetail("(.*ServerName,)([0-9A-Za-z]{1,50})(,*\\n+UserName,)([0-9A-Za-z]{1,50})(,*\\n+Password,)([0-9A-Za-z]{1,50})(,*\\n+)");  //work line ends with or without ','
+	//regex searchDetail("(.*ServerName,)(.*)(,*\\n+UserName,)(.*)(,*\\n+Password,)(.*)(,*\\n+)");  //don't allow end line with ','
+	//regex searchDetail("(.*ServerName,)(.*)(,\\n*)(.*UserName,)(.*)(,\\n*)(.*Password,)(.*)(,\\n*)");  //need to end line with ','
+	for (auto i = 0; i < serverNum; i++)
+	{
+		if (std::regex_search(tmpConfigStr, sernum_match, searchDetail)) {
+			/*for (size_t k = 0; k < sernum_match.size(); ++k)
+				std::cout << k << ": " << sernum_match[k]<<endl;*/
+			cout << "ServerName:" << sernum_match[2] << endl;
+			cout << "UserName:" << sernum_match[4] << endl;
+			cout << "Password:" << sernum_match[6] << endl;
+			tmpConfigStr = sernum_match.suffix();
+		}
+	}
+
+
+
+
+
+
+
+	//string configFileStr = "";
+	//fstream out;
+	//char linebuffer[1024];  // max line
+	//out.open("", ios::in);
+	//while (!out.eof())
+	//{
+	//	out.getline(linebuffer, sizeof(linebuffer)-1, '\n');
+
+	//}
+	//out.close();
+
 	//TestTryCatch();
 	//Casting();
 	//Polymorphism();
-	DiffSmartAndRawPointer();
+	//DiffSmartAndRawPointer();
 	//SmartPointer();
 	//PointerReference();
 	//classtemplate();
