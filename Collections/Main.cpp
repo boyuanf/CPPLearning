@@ -22,7 +22,7 @@ void LearnInheritanceandEnum()
 	{
 		Tweeter  p2("Someone", "Else", 456,"@whoever");
 	}
-	std::cout << "after innermost block" << std::endl;
+	cout << "after innermost block" << endl;
 	Status s = Pending;
 	s = Approved;
 }
@@ -288,10 +288,10 @@ void DiffSmartAndRawPointer()
 
 void StringLenthAndChar2wChar()
 {
-	std::unique_ptr<char[]> myBuffer(new char[1024]);
+	unique_ptr<char[]> myBuffer(new char[1024]);
 	cout << strlen(&myBuffer[0]);
 	//memset(&myBuffer[0], 0, 1024);
-	std::string s = "Message from thread queue by POST!";  //Write constant string for
+	string s = "Message from thread queue by POST!";  //Write constant string for
 	//memcpy(myBuffer, s.c_str(), s.length());
 	//strcpy(&myBuffer[0], s.c_str());
 	memcpy_s(&myBuffer[0], 1024, s.c_str(), s.length() + 1);
@@ -311,62 +311,112 @@ void StringLenthAndChar2wChar()
 	return;
 }
 
-int _tmain(int argc, _TCHAR* argv[])
-{
+enum TRX_TYPE{
+	PT_A_Live = 0,
+	PT_A_Test
+};
 
+struct Server_Info
+{
+	string serverName;
+	string userName;
+	string pwd;
+};
+
+
+
+bool AddServertoList(vector<Server_Info> *trxServerList, TRX_TYPE trx_type, string configFileStr, map<int, string> trxNameMap)
+{
+	auto serverNum = 0;
+	string tmpConfigStr;
+	Server_Info tmpSerInfo;
+	smatch sernum_match;
+	string regexExp;
+
+	regexExp = trxNameMap[trx_type] + ",\\nServerNum,(\\d+),*\\n*";   //create the search string according to trx type
+
+	regex testSearch(regexExp, regex_constants::ECMAScript | regex_constants::icase);
+	if (regex_search(configFileStr, sernum_match, testSearch)) {
+		cout << "ServerNumber:" << sernum_match[1] << endl;
+		tmpConfigStr = sernum_match.suffix();
+		serverNum = stoi(sernum_match[1]);
+	}
+	regex searchDetail("(.*ServerName,)([0-9A-Za-z]{1,50})(,*\\n+UserName,)([0-9A-Za-z]{1,50})(,*\\n+Password,)([0-9A-Za-z]{1,50})(,*\\n+)");  //work line ends with or without ','
+	for (auto i = 0; i < serverNum; i++)
+	{
+		if (regex_search(tmpConfigStr, sernum_match, searchDetail)) {
+			cout << "ServerName:" << sernum_match[2] << endl;
+			cout << "UserName:" << sernum_match[4] << endl;
+			cout << "Password:" << sernum_match[6] << endl;
+			tmpSerInfo.serverName = sernum_match[2];
+			tmpSerInfo.userName = sernum_match[4];
+			tmpSerInfo.pwd = sernum_match[6];
+			trxServerList[trx_type].push_back(tmpSerInfo);
+			tmpConfigStr = sernum_match.suffix();
+		}
+	}
+	return true;
+}
+
+void ReadConfigFile()
+{
 	//Read Config File
 	ifstream in("StlinkConfig.csv");
 	stringstream strStream;
 	strStream << in.rdbuf();
 	string configFileStr(strStream.str());
 	string tmpConfigStr;
-	char p[5000];
-	strcpy(p, configFileStr.c_str());
+	/*char p[5000];
+	strcpy(p, configFileStr.c_str());*/
 	auto serverNum = 0;
+	vector<Server_Info> trxServerList[2];  // Server List for all trx
+	map<int, string> trxNameMap;
 
-	std::smatch sernum_match;
+	trxNameMap.emplace(PT_A_Live, "PtAuth_Live");
+	trxNameMap.emplace(PT_A_Test, "PtAuth_Test");
 
+	AddServertoList(trxServerList, PT_A_Live, configFileStr, trxNameMap);   //later trxServerList, configFileStr, trxNameMap may be declared as class members, no need to pass as parameter
+	AddServertoList(trxServerList, PT_A_Test, configFileStr, trxNameMap);
+
+	//------------------bellow are the trial code we used to create regex string-------------------//
+
+	smatch sernum_match;
 	// + means one or more, * means 0 or more
-	regex testSearch("PtAuth_Live,\\nServerNum,(\\d+),*\\n*", std::regex_constants::ECMAScript | std::regex_constants::icase);
+	regex testSearch("PtAuth_Live,\\nServerNum,(\\d+),*\\n*", regex_constants::ECMAScript | regex_constants::icase);
 	//regex testSearch("PtAuth_Live,\nServerNum,(.*),\n", std::regex_constants::ECMAScript | std::regex_constants::icase);
 	//regex testSearch("PtAuth_Live,\nServerNum,([0-9]{1}),\n", std::regex_constants::ECMAScript | std::regex_constants::icase);
-	if (std::regex_search(configFileStr, sernum_match, testSearch)) {
-		cout <<"ServerNumber:"<< sernum_match[1] << endl;
+	if (regex_search(configFileStr, sernum_match, testSearch)) {
+		cout << "ServerNumber:" << sernum_match[1] << endl;
 		/*for(size_t i = 0; i < sernum_match.size(); ++i)
-			std::cout << i << ": " << sernum_match[i] << '\n';
+		std::cout << i << ": " << sernum_match[i] << '\n';
 		cout << sernum_match.str() << endl;
 		cout<<endl << sernum_match.suffix() << endl;*/
 		tmpConfigStr = sernum_match.suffix();
-		serverNum = std::stoi(sernum_match[1]);
+		serverNum = stoi(sernum_match[1]);
 	}
-	
+
 	/*regex testSearch2("(.*ServerName,)(.*)(,\\n*)(.*UserName,)(.*)(,\\n*)(.*Password,)(.*)(,\\n*)");
 	if (std::regex_search(tmpConfigStr, sernum_match, testSearch2)) {
-		cout << "ServerName:" << sernum_match[2] << endl;
-		cout << "UserName:" << sernum_match[4] << endl;
-		cout << "Password:" << sernum_match[8] << endl;
-		std::cout << "Suffix: '" << sernum_match.suffix() << "\'\n\n";
+	cout << "ServerName:" << sernum_match[2] << endl;
+	cout << "UserName:" << sernum_match[4] << endl;
+	cout << "Password:" << sernum_match[8] << endl;
+	std::cout << "Suffix: '" << sernum_match.suffix() << "\'\n\n";
 	}*/
-	
+
 	regex searchDetail("(.*ServerName,)([0-9A-Za-z]{1,50})(,*\\n+UserName,)([0-9A-Za-z]{1,50})(,*\\n+Password,)([0-9A-Za-z]{1,50})(,*\\n+)");  //work line ends with or without ','
 	//regex searchDetail("(.*ServerName,)(.*)(,*\\n+UserName,)(.*)(,*\\n+Password,)(.*)(,*\\n+)");  //don't allow end line with ','
 	//regex searchDetail("(.*ServerName,)(.*)(,\\n*)(.*UserName,)(.*)(,\\n*)(.*Password,)(.*)(,\\n*)");  //need to end line with ','
 	for (auto i = 0; i < serverNum; i++)
 	{
-		if (std::regex_search(tmpConfigStr, sernum_match, searchDetail)) {
+		if (regex_search(tmpConfigStr, sernum_match, searchDetail)) {
 			/*for (size_t k = 0; k < sernum_match.size(); ++k)
-				std::cout << k << ": " << sernum_match[k]<<endl;*/
+			std::cout << k << ": " << sernum_match[k]<<endl;*/
 			cout << "ServerName:" << sernum_match[2] << endl;
 			cout << "UserName:" << sernum_match[4] << endl;
 			cout << "Password:" << sernum_match[6] << endl;
 			tmpConfigStr = sernum_match.suffix();
 		}
 	}
-
-
-
-
-
 
 
 	//string configFileStr = "";
@@ -379,7 +429,12 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//}
 	//out.close();
+}
 
+int _tmain(int argc, _TCHAR* argv[])
+{
+
+	//ReadConfigFile();
 	//TestTryCatch();
 	//Casting();
 	//Polymorphism();
