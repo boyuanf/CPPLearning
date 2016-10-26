@@ -3,22 +3,26 @@
 #include <iostream>
 #include <map>
 #include <algorithm>
+#include <fstream>
+#include <regex>
+#include <sstream>
 
 //#include "Person.h"
 #include "Tweeter.h"
 #include "Status.h"
 #include "Accum.h"
 #include "Resource.h"
+#include "Collections.h"
 
 using namespace  std;
 
-void LearnInheritance()
+void LearnInheritanceandEnum()
 {
 	Person p1("Kate", "Gregory", 123);
 	{
 		Tweeter  p2("Someone", "Else", 456,"@whoever");
 	}
-	std::cout << "after innermost block" << std::endl;
+	cout << "after innermost block" << endl;
 	Status s = Pending;
 	s = Approved;
 }
@@ -120,13 +124,22 @@ void PointerReference()
 
 void SmartPointer()
 {
-	shared_ptr<int> ptrInt(new int[5]);
-	shared_ptr<int> ptrInt2 =make_shared<int>(100);  //declare only 1 int
 
-	/*for (int i = 0; i < 5; i++)
-	{
-		cout << *(ptrInt+1) << endl;
-	}*/
+	shared_ptr<int> ptrInt2 = make_shared<int>(100);  //declare only 1 int
+
+	unique_ptr<int []> ptrInt(new int[5]);  //use unique pointers point to array
+	ptrInt.get()[0] = 5;
+	*(ptrInt.get() + 1) = 6;
+	ptrInt[2] = 7;
+	for (auto pInt = ptrInt.get(); pInt < ptrInt.get() + 3; pInt++) cout << *pInt << endl;
+
+	//use shared pointers point to array
+	shared_ptr<string> sp(new string[4], [](string *p) { delete[] p; });
+	sp.get()[0] = "string 1";
+	sp.get()[1] = "string 2";
+	sp.get()[2] = "string 3";
+	*(sp.get() + 3) = "string 4";
+	for (auto q = sp.get(); q < sp.get() + 4; q++) cout << *q << endl;
 
 	{
 		Resource localResource("local");
@@ -309,44 +322,14 @@ void Testpolymorphism()
 int _tmain(int argc, _TCHAR* argv[])
 {
 	Testpolymorphism();
+	
 
-	/*B *b = new B();
-	b->eat();*/
-	/*int numbers[5] = { 1, 2, 3, 1, 5 };
-	int r = 1;
-	__asm
-	{
-		LEA ESI, numbers
-		MOV ECX, 0
-		MOV EAX, r
-	labell:
-		MOV EBX, [ESI + ECX *4]
-			IMUL EAX, EBX
-			ADD ECX,1
-			CMP ECX, 5
-			JL labell
-			MOV r, EAX
-	}
-	cout << r;*/
-	/*vector<int> v;
-	v.resize(1000);
-	for (int i = 0; i < 1000;i++)
-	{
-		v.push_back(i);
-	}*/
-	//int a = 0;
-	//Bar(a);
-	//B b;
-	//if ((Foo("1", true) || Foo("2", false)) && Foo("3", false))Foo("4", false);
-	//if ((Foo("5", false) && Foo("6", true)) || Foo("7", true))Foo("8", true);
-
-	//cout << 22 / 5 * 3;
-	//SmartPointer();
+	SmartPointer();
 	//PointerReference();
 	//classtemplate();
 	//learnfunctiontemplate();
 	//ImmediateIf();
-	//LearnInheritance();
+	//LearnInheritanceandEnum();
 	//learnCollections();
 	return 0;
 }

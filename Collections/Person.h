@@ -5,7 +5,7 @@
 #define _Person_H
 class Person
 {
-protected:
+private:
 	std::string firstname;
 	std::string lastname;
 	int arbitrarynumber;
@@ -19,8 +19,8 @@ public:
 		int arbitrary);
 	Person();
 	/*Person(const Person &p);*/
-	~Person();
-	std::string GetName() {return firstname + " " + lastname;}
+	virtual ~Person();  //enable to allow the us to discontruct the dived class when we pass the pointer of divered class to base class
+	virtual std::string GetName() const { return firstname + " " + lastname; }
 	void SetNum(int arbitrary) { arbitrarynumber = arbitrary; }
 	int GetNum() {return arbitrarynumber;}
 	bool operator<(Person& p);

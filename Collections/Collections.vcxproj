@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Accum.h" />
+    <ClInclude Include="Collections.h" />
     <ClInclude Include="functions.h" />
     <ClInclude Include="Person.h" />
     <ClInclude Include="Resource.h" />

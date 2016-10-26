@@ -1,0 +1,14 @@
+PtAuth_Live,
+ServerNum,2
+ServerName,MTLQAVDB04
+UserName,sa,
+Password,WPPT8Live
+ServerName,MTLQAVDB05,
+UserName,sa,
+Password,WPPT8Live,
+
+PtAuth_Test,
+ServerNum,1,
+ServerName,MTLQAVDB106,
+UserName,sa,
+Password,WPPT8Test,
