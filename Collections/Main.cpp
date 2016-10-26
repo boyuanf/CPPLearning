@@ -142,11 +142,206 @@ void SmartPointer()
 	string s1 = p1.GetResourceName();
 }
 
+//class A
+//{
+//public:
+//	A()
+//	{
+//		cout << 1;
+//	}
+//
+//};
+//
+//class B:A
+//{
+//public:
+//	B()
+//	{
+//		cout << 3;
+//	}
+//
+//};
+//
+//void Foo(int x)
+//{
+//	cout << "1";
+//}
+//void Foo(int* x)
+//{
+//	cout << "2";
+//}
+//void Foo(int** x)
+//{
+//	cout << "3";
+//}
+//void Bar(int& x)
+//{
+//	Foo(&x);
+//	int *y = (int*)&x;
+//	Foo(y);
+//	Foo(*y);
+//	Foo(&y);
+//}
+
+//class A {}
+//class B
+//{
+//public:
+//	virtual float eat();
+//	virtual void Sleep();
+//	/*public static void Foo()
+//	{
+//		object a = new A();
+//		B b = null;
+//		try
+//		{
+//			b = (B)a;
+//			Console.Write("1");
+//		}
+//		catch (Exception) {}
+//		try
+//		{
+//			b = a as B;
+//
+//		}
+//
+//	}*/
+//	
+//};
+
+class TPA
+{
+public:
+	TPA()
+	{
+		cout << "constructor of TPA!" << endl;
+	}
+
+	void virtual testVirtualA()
+	{
+		printf("Test virtual in A\n");
+	}
+
+	void testHideA()
+	{
+		printf("Test hide in A\n");
+	}
+
+	int test1 = 1;
+
+	virtual ~TPA()
+	{
+		cout << "deconstructor of TPA!" << endl;
+	}
+};
+
+class TPB : public TPA
+{
+public:
+	TPB()
+	{
+		cout << "constructor of TPB!" << endl;
+	}
+	void testTPB()
+	{
+		return;
+	}
+
+	void testVirtualA()
+	{
+		printf("Test virtual in B\n");
+	}
+
+	void testHideA()
+	{
+		printf("Test hide in B\n");
+	}
+
+	int test1 = 2;
+
+	~TPB()
+	{
+		cout << "deconstructor of TPB!" << endl;
+	}
+};
+
+void Testpolymorphism()
+{
+	TPA pp = TPB();
+
+	//// constructor and deconstructor
+	//TPB bConstrutor;
+
+	//// test the way to create class object
+	//TPA aaq = TPA();  
+	//TPA aap;
+	//aaq.test1 = 6;
+	//aap.test1 = 7;
+
+	//
+
+	//// Test slicing
+	//printf("Test slicing\n");
+	//TPA aa = TPB();
+	////aa.testTPB();  //don't have the member function.
+	//aa.testVirtualA();
+	//aa.testHideA();
+	//cout << aa.test1;  //will print the value of TPA
+
+
+	////TPB bb = TPA();  // compile error
+
+	//printf("-----------------------\n");
+
+	//// Test virtual and hide
+	//printf("Test virtual and hide\n");
+	//TPA *a = new TPA();
+	//TPB *b = new TPB();
+	//TPA *c = b;
+	//c->testVirtualA();
+	//c->testHideA();
+	////c.testTPB();  //can't find the method
+	////TPB *d = a;   //compile error
+}
+
+
+
 int _tmain(int argc, _TCHAR* argv[])
 {
-	
+	Testpolymorphism();
 
-	SmartPointer();
+	/*B *b = new B();
+	b->eat();*/
+	/*int numbers[5] = { 1, 2, 3, 1, 5 };
+	int r = 1;
+	__asm
+	{
+		LEA ESI, numbers
+		MOV ECX, 0
+		MOV EAX, r
+	labell:
+		MOV EBX, [ESI + ECX *4]
+			IMUL EAX, EBX
+			ADD ECX,1
+			CMP ECX, 5
+			JL labell
+			MOV r, EAX
+	}
+	cout << r;*/
+	/*vector<int> v;
+	v.resize(1000);
+	for (int i = 0; i < 1000;i++)
+	{
+		v.push_back(i);
+	}*/
+	//int a = 0;
+	//Bar(a);
+	//B b;
+	//if ((Foo("1", true) || Foo("2", false)) && Foo("3", false))Foo("4", false);
+	//if ((Foo("5", false) && Foo("6", true)) || Foo("7", true))Foo("8", true);
+
+	//cout << 22 / 5 * 3;
+	//SmartPointer();
 	//PointerReference();
 	//classtemplate();
 	//learnfunctiontemplate();
